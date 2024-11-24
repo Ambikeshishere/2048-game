@@ -1,5 +1,3 @@
-// script.js
-
 document.addEventListener("DOMContentLoaded", () => {
     const board = Array.from({ length: 4 }, () => Array(4).fill(0));
     const gameBoard = document.getElementById("game-board");
@@ -8,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let touchStartX = 0;
     let touchStartY = 0;
   
-    // Initialize the game
     function startGame() {
       addNewTile();
       addNewTile();
@@ -16,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
       gameStatus.textContent = "";
     }
   
-    // Add a new tile with value 2 at a random empty position
     function addNewTile() {
       const emptyTiles = [];
       board.forEach((row, i) => {
@@ -31,7 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    // Update the game board visually
     function updateBoard() {
       gameBoard.innerHTML = "";
       board.forEach(row => {
@@ -47,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
   
-    // Handle moves
     function move(direction) {
       let moved = false;
   
@@ -75,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    // Combine tiles and handle compression
     function compressAndMerge(row) {
       const nonZeroTiles = row.filter(value => value !== 0);
       let mergedRow = [];
@@ -84,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let i = 0; i < nonZeroTiles.length; i++) {
         if (nonZeroTiles[i] === nonZeroTiles[i + 1]) {
           mergedRow.push(nonZeroTiles[i] * 2);
-          i++; // Skip the next tile as it's merged
+          i++;
           changed = true;
         } else {
           mergedRow.push(nonZeroTiles[i]);
@@ -96,7 +89,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return { mergedRow, changed };
     }
   
-    // Check the game state (Win/Loss)
     function checkGameState() {
       const hasEmpty = board.some(row => row.includes(0));
       const hasMove = canMakeMove();
@@ -110,25 +102,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    // Check if any move is possible
     function canMakeMove() {
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 4; j++) {
-          if (j < 3 && board[i][j] === board[i][j + 1]) return true; // Check right
-          if (i < 3 && board[i][j] === board[i + 1][j]) return true; // Check down
+          if (j < 3 && board[i][j] === board[i][j + 1]) return true;
+          if (i < 3 && board[i][j] === board[i + 1][j]) return true;
         }
       }
       return false;
     }
   
-    // Disable keyboard input when the game is over
     function disableInput() {
       document.removeEventListener("keydown", handleKeyPress);
       gameBoard.removeEventListener("touchstart", handleTouchStart);
       gameBoard.removeEventListener("touchend", handleTouchEnd);
     }
   
-    // Handle keypresses for movement
     function handleKeyPress(e) {
       if (e.key === "ArrowUp") move("up");
       else if (e.key === "ArrowDown") move("down");
@@ -136,14 +125,12 @@ document.addEventListener("DOMContentLoaded", () => {
       else if (e.key === "ArrowRight") move("right");
     }
   
-    // Handle touch start for swipe detection
     function handleTouchStart(e) {
       const touch = e.touches[0];
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
     }
   
-    // Handle touch end for swipe detection
     function handleTouchEnd(e) {
       const touch = e.changedTouches[0];
       const touchEndX = touch.clientX;
@@ -161,14 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   
-    // Add event listener for keypresses
     document.addEventListener("keydown", handleKeyPress);
-  
-    // Add event listeners for touch input
     gameBoard.addEventListener("touchstart", handleTouchStart);
     gameBoard.addEventListener("touchend", handleTouchEnd);
-  
-    // Start the game
     startGame();
   });
-  
